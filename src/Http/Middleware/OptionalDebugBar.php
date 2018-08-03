@@ -10,9 +10,8 @@ use Illuminate\Http\Request;
 
 class OptionalDebugBar
 {
-
     /**
-     * The App container
+     * The App container.
      *
      * @var Container
      */
@@ -28,7 +27,7 @@ class OptionalDebugBar
     /**
      * Create a new middleware instance.
      *
-     * @param  Container $container
+     * @param Container $container
      */
     public function __construct(Container $container)
     {
@@ -39,10 +38,12 @@ class OptionalDebugBar
     /**
      * Handle an incoming request.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
-     * @param  \Closure $next
-     * @return mixed
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Closure                                  $next
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function handle($request, \Closure $next)
     {
@@ -50,10 +51,11 @@ class OptionalDebugBar
             $debugBar = resolve(LaravelDebugbar::class);
             $bootValidator = resolve(config('conditional-debugbar.debugbar-boot-validator'));
             $debuggerPreviouslyEnabled = $debugBar->isEnabled();
-            if ($debuggerPreviouslyEnabled && !$bootValidator->isInDebugMode())
+            if ($debuggerPreviouslyEnabled && !$bootValidator->isInDebugMode()) {
                 $debugBar->disable();
-            elseif (!$debuggerPreviouslyEnabled && $bootValidator->isInDebugMode()) {
+            } elseif (!$debuggerPreviouslyEnabled && $bootValidator->isInDebugMode()) {
                 $debugBar->enable();
+
                 try {
                     /** @var \Illuminate\Http\Response $response */
                     $response = $next($request);
@@ -64,6 +66,7 @@ class OptionalDebugBar
                 return $debugBar->modifyResponse($request, $response);
             }
         }
+
         return $next($request);
     }
 
@@ -73,9 +76,11 @@ class OptionalDebugBar
      * (Copy from Illuminate\Routing\Pipeline by Taylor Otwell)
      *
      * @param $passable
-     * @param  Exception $e
-     * @return mixed
+     * @param Exception $e
+     *
      * @throws Exception
+     *
+     * @return mixed
      */
     protected function handleException($passable, Exception $e)
     {
@@ -93,7 +98,8 @@ class OptionalDebugBar
     /**
      * Determine if the request has a URI that should be ignored.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     protected function inExceptArray($request)
