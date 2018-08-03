@@ -47,15 +47,16 @@ class OptionalDebugBar
      */
     public function handle($request, \Closure $next)
     {
-        if (class_exists(\Debugbar::class)) {
+        if (class_exists(LaravelDebugbar::class)) {
             $debugBar = resolve(LaravelDebugbar::class);
             $bootValidator = resolve(config('conditional-debugbar.debugbar-boot-validator'));
             $debuggerPreviouslyEnabled = $debugBar->isEnabled();
             if ($debuggerPreviouslyEnabled && !$bootValidator->isInDebugMode()) {
                 $debugBar->disable();
+                session()->put('debugBarEnabled', false);
             } elseif (!$debuggerPreviouslyEnabled && $bootValidator->isInDebugMode()) {
                 $debugBar->enable();
-
+                session()->put('debugBarEnabled', true);
                 try {
                     /** @var \Illuminate\Http\Response $response */
                     $response = $next($request);

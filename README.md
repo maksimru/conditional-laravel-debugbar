@@ -5,7 +5,8 @@
 
 ## About
 
-Allows to boot laravel-debugbar with custom conditions
+Allows to boot laravel-debugbar with custom conditions instead of APP_DEBUG and environment
+You are free to use \Auth::check(), custom headers, custom parameters or anything you wish
 
 ## Installation
 
@@ -19,9 +20,9 @@ composer require maksimru/conditional-laravel-debugbar
 ```bash
 php artisan vendor:publish
 ```
-2) Create new boot validator implementing MaksimM\ConditionalDebugBar\Interfaces\DebugModeChecker interface
-3) Replace validator class in config/conditional-debugbar.php in debugbar-boot-validator
-4) See provided example for more details
+2) Create new boot validator implementing \MaksimM\ConditionalDebugBar\Interfaces\DebugModeChecker interface
+3) Replace validator class in config/conditional-debugbar.php in debugbar-boot-validator (See provided example for more details)
+4) Add \MaksimM\ConditionalDebugBar\Http\Middleware\OptionalDebugBar::class middleware on routes where you wish to use the debugbar
 
 ---
 

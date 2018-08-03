@@ -25,6 +25,8 @@
   },
   "require-dev": {
     "laravel/framework": "^5.5",
+    "orchestra/testbench": "~3.0",
+    "orchestra/testbench-browser-kit": "~3.1",
     "mockery/mockery": "0.9.*",
     "fzaninotto/faker": "~1.4",
     "phpunit/phpunit": "6",

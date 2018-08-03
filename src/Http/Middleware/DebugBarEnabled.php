@@ -20,9 +20,9 @@ class DebugBarEnabled
      */
     public function handle($request, Closure $next)
     {
-        if (class_exists(\Debugbar::class)) {
+        if (class_exists(LaravelDebugbar::class)) {
             $debugBar = resolve(LaravelDebugbar::class);
-            if (session()->has('debugBarEnabled')) {
+            if (session()->has('debugBarEnabled') && session('debugBarEnabled', false)) {
                 $debugBar->enable();
             }
             if (!$debugBar->isEnabled()) {
