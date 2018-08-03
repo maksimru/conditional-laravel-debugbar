@@ -48,6 +48,10 @@ class OptionalDebugBar
     public function handle($request, \Closure $next)
     {
         if (class_exists(LaravelDebugbar::class)) {
+            //except array option support
+            if ($this->inExceptArray($request)) {
+                return $next($request);
+            }
             $debugBar = resolve(LaravelDebugbar::class);
             $bootValidator = resolve(config('conditional-debugbar.debugbar-boot-validator'));
             $debuggerPreviouslyEnabled = $debugBar->isEnabled();

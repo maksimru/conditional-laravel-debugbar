@@ -12,9 +12,9 @@ class IntentionallyDisabledDebugBarRouteTest extends TestCase
     private $blank_page = '<html xmlns="http://www.w3.org/1999/html"><head></head><body</body</html>';
 
     /** @test */
-    public function validateAssetsAccessMiddleware()
+    public function validateAssets()
     {
-        $this->validatePageWithMiddleware();
+        $this->validatePage();
         $crawler = $this->call('GET', route('debugbar.assets.js'));
         $this->assertEquals(404, $crawler->getStatusCode());
         $crawler = $this->call('GET', route('debugbar.assets.css'));
@@ -22,7 +22,7 @@ class IntentionallyDisabledDebugBarRouteTest extends TestCase
     }
 
     /** @test */
-    public function validatePageWithMiddleware()
+    public function validatePage()
     {
         $crawler = $this->call('GET', 'page-with-middleware');
         $this->assertEquals($this->blank_page, $crawler->getContent());

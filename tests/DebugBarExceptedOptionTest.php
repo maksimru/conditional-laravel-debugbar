@@ -8,24 +8,30 @@ use MaksimM\ConditionalDebugBar\DebugModeBootValidators\TestingDebugBarBootValid
 use MaksimM\ConditionalDebugBar\Http\Middleware\OptionalDebugBar;
 use Orchestra\Testbench\BrowserKit\TestCase;
 
-class BootedAlreadyEnabledDebugBarRouteTest extends TestCase
+class DebugBarExceptedOptionTest extends TestCase
 {
     private $blank_page = '<html xmlns="http://www.w3.org/1999/html"><head></head><body</body</html>';
 
     /** @test */
-    public function validateAssets()
+    public function validateExcludedPage()
     {
-        $this->validatePage();
-        $crawler = $this->call('GET', route('debugbar.assets.js'));
-        $this->assertEquals(200, $crawler->getStatusCode());
-        $crawler = $this->call('GET', route('debugbar.assets.css'));
-        $this->assertEquals(200, $crawler->getStatusCode());
+        $crawler = $this->call('GET', 'excluded/page');
+        $this->assertEquals($this->blank_page, $crawler->getContent());
+        $this->assertNotContains('PhpDebugBar.DebugBar', $crawler->getContent());
     }
 
     /** @test */
-    public function validatePage()
+    public function validateExcludedPageWithSlash()
     {
-        $crawler = $this->call('GET', 'page-with-middleware');
+        $crawler = $this->call('GET', '/excluded/another-page');
+        $this->assertEquals($this->blank_page, $crawler->getContent());
+        $this->assertNotContains('PhpDebugBar.DebugBar', $crawler->getContent());
+    }
+
+    /** @test */
+    public function validateIncludedPage()
+    {
+        $crawler = $this->call('GET', 'included/page');
         $this->assertNotEquals($this->blank_page, $crawler->getContent());
         $this->assertContains('PhpDebugBar.DebugBar', $crawler->getContent());
     }
@@ -45,10 +51,14 @@ class BootedAlreadyEnabledDebugBarRouteTest extends TestCase
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('conditional-debugbar.debugbar-boot-validator', TestingDebugBarBootValidator::class);
-        $app['config']->set('debugbar.enabled', true);
-        $app['config']->set('app.debug', true);
-        resolve(\Barryvdh\Debugbar\LaravelDebugbar::class)->enable();
-        $app['router']->get('page-with-middleware', ['uses' => function () {
+        $app['config']->set('debugbar.except', ['excluded/*']);
+        $app['router']->get('excluded/page', ['uses' => function () {
+            return $this->blank_page;
+        }])->middleware(OptionalDebugBar::class);
+        $app['router']->get('/excluded/another-page', ['uses' => function () {
+            return $this->blank_page;
+        }])->middleware(OptionalDebugBar::class);
+        $app['router']->get('included/page', ['uses' => function () {
             return $this->blank_page;
         }])->middleware(OptionalDebugBar::class);
     }

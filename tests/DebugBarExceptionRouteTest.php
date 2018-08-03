@@ -6,27 +6,19 @@ use Barryvdh\Debugbar\ServiceProvider;
 use MaksimM\ConditionalDebugBar\ConditionalDebugBarServiceProvider;
 use MaksimM\ConditionalDebugBar\DebugModeBootValidators\TestingDebugBarBootValidator;
 use MaksimM\ConditionalDebugBar\Http\Middleware\OptionalDebugBar;
+use Mockery\Exception;
 use Orchestra\Testbench\BrowserKit\TestCase;
 
-class BootedAlreadyEnabledDebugBarRouteTest extends TestCase
+class DebugBarExceptionRouteTest extends TestCase
 {
     private $blank_page = '<html xmlns="http://www.w3.org/1999/html"><head></head><body</body</html>';
-
-    /** @test */
-    public function validateAssets()
-    {
-        $this->validatePage();
-        $crawler = $this->call('GET', route('debugbar.assets.js'));
-        $this->assertEquals(200, $crawler->getStatusCode());
-        $crawler = $this->call('GET', route('debugbar.assets.css'));
-        $this->assertEquals(200, $crawler->getStatusCode());
-    }
 
     /** @test */
     public function validatePage()
     {
         $crawler = $this->call('GET', 'page-with-middleware');
         $this->assertNotEquals($this->blank_page, $crawler->getContent());
+        $this->assertContains('Test Exception', $crawler->getContent());
         $this->assertContains('PhpDebugBar.DebugBar', $crawler->getContent());
     }
 
@@ -45,10 +37,8 @@ class BootedAlreadyEnabledDebugBarRouteTest extends TestCase
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('conditional-debugbar.debugbar-boot-validator', TestingDebugBarBootValidator::class);
-        $app['config']->set('debugbar.enabled', true);
-        $app['config']->set('app.debug', true);
-        resolve(\Barryvdh\Debugbar\LaravelDebugbar::class)->enable();
         $app['router']->get('page-with-middleware', ['uses' => function () {
+            throw new Exception('Test Exception');
             return $this->blank_page;
         }])->middleware(OptionalDebugBar::class);
     }
