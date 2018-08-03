@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Testbench\BrowserKit\Tests;
+namespace MaksimM\ConditionalDebugBar\Tests;
 
 use Barryvdh\Debugbar\ServiceProvider;
 use MaksimM\ConditionalDebugBar\ConditionalDebugBarServiceProvider;

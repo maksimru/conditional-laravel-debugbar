@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Testbench\BrowserKit\Tests;
+namespace MaksimM\ConditionalDebugBar\Tests;
 
 use MaksimM\ConditionalDebugBar\ConditionalDebugBarServiceProvider;
 use MaksimM\ConditionalDebugBar\Http\Middleware\OptionalDebugBar;

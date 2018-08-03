@@ -3,10 +3,7 @@
 namespace MaksimM\ConditionalDebugBar\Http\Middleware;
 
 use Barryvdh\Debugbar\LaravelDebugbar;
-use Exception;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Http\Request;
 
 class OptionalDebugBar
 {
@@ -61,44 +58,12 @@ class OptionalDebugBar
             } elseif (!$debuggerPreviouslyEnabled && $bootValidator->isInDebugMode()) {
                 $debugBar->enable();
                 session()->put('debugBarEnabled', true);
-
-                try {
-                    /** @var \Illuminate\Http\Response $response */
-                    $response = $next($request);
-                } catch (Exception $e) {
-                    $response = $this->handleException($request, $e);
-                }
-
+                $response = $next($request);
                 return $debugBar->modifyResponse($request, $response);
             }
         }
 
         return $next($request);
-    }
-
-    /**
-     * Handle the given exception.
-     *
-     * (Copy from Illuminate\Routing\Pipeline by Taylor Otwell)
-     *
-     * @param $passable
-     * @param Exception $e
-     *
-     * @throws Exception
-     *
-     * @return mixed
-     */
-    protected function handleException($passable, Exception $e)
-    {
-        if (!$this->container->bound(ExceptionHandler::class) || !$passable instanceof Request) {
-            throw $e;
-        }
-
-        $handler = $this->container->make(ExceptionHandler::class);
-
-        $handler->report($e);
-
-        return $handler->render($passable, $e);
     }
 
     /**
