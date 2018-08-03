@@ -10,9 +10,9 @@ use Illuminate\Support\ServiceProvider;
 
 class ConditionalDebugBarServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application services.
+     *
      * @throws \Exception
      */
     public function boot()
@@ -20,7 +20,7 @@ class ConditionalDebugBarServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             if (!str_contains($this->app->version(), 'Lumen')) {
                 $this->publishes([
-                    __DIR__ . '/../config/conditional-debugbar.php' => config_path('addons/conditional-debugbar.php'),
+                    __DIR__.'/../config/conditional-debugbar.php' => config_path('addons/conditional-debugbar.php'),
                 ], 'config');
             }
         }
@@ -34,11 +34,11 @@ class ConditionalDebugBarServiceProvider extends ServiceProvider
     {
         if (class_exists(\Debugbar::class)) {
             /**
-             * @var Router $router
+             * @var Router
              */
             $router = $app['router'];
             /**
-             * @var Collection|Route[] $debugbarRoutes
+             * @var Collection|Route[]
              */
             $debugbarRoutes = collect($router->getRoutes()->getRoutesByName())
                 ->filter(function ($value, $key) {
@@ -60,7 +60,6 @@ class ConditionalDebugBarServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/conditional-debugbar.php', 'addons.conditional-debugbar');
+        $this->mergeConfigFrom(__DIR__.'/../config/conditional-debugbar.php', 'addons.conditional-debugbar');
     }
-
 }
