@@ -59,6 +59,7 @@ class OptionalDebugBar
                 $debugBar->enable();
                 session()->put('debugBarEnabled', true);
                 $response = $next($request);
+
                 return $debugBar->modifyResponse($request, $response);
             }
         }
