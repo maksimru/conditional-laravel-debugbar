@@ -1,0 +1,53 @@
+{
+  "name": "maksimru/conditional-laravel-debugbar",
+  "description": "Allows to boot laravel debug bar conditionally",
+  "keywords": [
+    "debugbar",
+    "laravel",
+    "conditional"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Maksim Martianov",
+      "email": "maxmtmn@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7",
+    "illuminate/cache": "^5.5",
+    "illuminate/contracts": "^5.5",
+    "illuminate/queue": "^5.5",
+    "illuminate/redis": "^5.5",
+    "illuminate/session": "^5.5",
+    "illuminate/support": "^5.5"
+  },
+  "require-dev": {
+    "laravel/framework": "^5.5",
+    "mockery/mockery": "0.9.*",
+    "fzaninotto/faker": "~1.4",
+    "phpunit/phpunit": "6",
+    "barryvdh/laravel-debugbar": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "MaksimM\\ConditionalDebugBar\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MaksimM\\ConditionalDebugBar\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "MaksimM\\ConditionalDebugBar\\ConditionalDebugBarServiceProvider"
+      ]
+    }
+  }
+}
