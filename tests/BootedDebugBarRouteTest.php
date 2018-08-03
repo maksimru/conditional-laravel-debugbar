@@ -10,8 +10,7 @@ use Orchestra\Testbench\BrowserKit\TestCase;
 
 class BootedDebugBarRouteTest extends TestCase
 {
-
-    private $blank_page = "<html xmlns=\"http://www.w3.org/1999/html\"><head></head><body</body</html>";
+    private $blank_page = '<html xmlns="http://www.w3.org/1999/html"><head></head><body</body</html>';
 
     /** @test */
     public function validateCleanPage()
@@ -46,7 +45,7 @@ class BootedDebugBarRouteTest extends TestCase
     /**
      * Define environment setup.
      *
-     * @param  Illuminate\Foundation\Application $app
+     * @param Illuminate\Foundation\Application $app
      *
      * @return void
      */
@@ -60,5 +59,4 @@ class BootedDebugBarRouteTest extends TestCase
             return $this->blank_page;
         }])->middleware(OptionalDebugBar::class);
     }
-
 }

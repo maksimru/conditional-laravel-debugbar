@@ -8,7 +8,6 @@ use Orchestra\Testbench\TestCase;
 
 class ConfigurationTest extends TestCase
 {
-
     /** @test */
     public function validate_config_file()
     {
@@ -20,5 +19,4 @@ class ConfigurationTest extends TestCase
     {
         return [ConditionalDebugBarServiceProvider::class];
     }
-
 }

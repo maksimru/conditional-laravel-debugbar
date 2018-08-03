@@ -57,6 +57,7 @@ class OptionalDebugBar
             } elseif (!$debuggerPreviouslyEnabled && $bootValidator->isInDebugMode()) {
                 $debugBar->enable();
                 session()->put('debugBarEnabled', true);
+
                 try {
                     /** @var \Illuminate\Http\Response $response */
                     $response = $next($request);

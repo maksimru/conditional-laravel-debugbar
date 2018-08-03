@@ -21,7 +21,7 @@ class ConditionalDebugBarServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             if (!str_contains($this->app->version(), 'Lumen')) {
                 $this->publishes([
-                    __DIR__ . '/../config/conditional-debugbar.php' => config_path('conditional-debugbar.php'),
+                    __DIR__.'/../config/conditional-debugbar.php' => config_path('conditional-debugbar.php'),
                 ], 'config');
             }
         }
@@ -60,6 +60,6 @@ class ConditionalDebugBarServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/conditional-debugbar.php', 'conditional-debugbar');
+        $this->mergeConfigFrom(__DIR__.'/../config/conditional-debugbar.php', 'conditional-debugbar');
     }
 }
